@@ -1,11 +1,13 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
 abstract class Model
 {
-    private $host='localhost';
-    private $user='root';
-    private $password = '';
-    private $dbName = 'textilExport';
+    private $host=$_ENV['DB_HOST'];
+    private $user=$_ENV['DB_USER'];
+    private $password = $_ENV['DB_PASSWORD'];
+    private $dbName = $_ENV['DB_NAME'];
     protected $conn;
 
     protected function openDB(){

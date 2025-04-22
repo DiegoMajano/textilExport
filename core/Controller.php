@@ -2,12 +2,12 @@
 
 abstract class Controller {
 
-    public function render($view, $viewBag=[]){
+    public function view($view, $data=[]){
         $file = "Views/".static::class."/$view";
         $file = str_replace('Controller','',$file);
 
         if(file_exists($file)){
-            extract($viewBag);
+            extract($data);
             ob_start(); 
             require_once($file);
 
