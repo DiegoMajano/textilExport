@@ -13,7 +13,7 @@ class SalesDetailsModel extends Model {
         }
     }
 
-    public function insert($data) {
+    public function add($data) {
         $query = "INSERT INTO sales_details (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)";
         return $this->setQuery($query, $data);
     }
