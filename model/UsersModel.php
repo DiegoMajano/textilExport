@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once 'core/Model.php';
 require_once 'core/Validator.php';
@@ -18,21 +18,21 @@ class UsersModel extends Model
 
     public function login($email)
     {
-        $query = "SELECT username, password, role_id, role FROM users INNER JOIN roles ON users.role_id = roles.role_id WHERE email = :email";
+        $query = "SELECT username, password, role_id, role FROM users INNER JOIN roles ON users.id_role = roles.role_id WHERE email = :email";
         return $this->getQuery($query, [':email' => $email]);
     }    
 
-    public function create($user)
-    {
-        $query = "INSERT INTO users (username, email, password, phone, id_role, state) VALUES (:username, :email, :password, :phone, :id_role, :state)";
-        return $this->setQuery($query, $user);
-    }
+  public function create($user)
+  {
+    $query = "INSERT INTO users (username, email, password, phone, id_role, state) VALUES (:username, :email, :password, :phone, :id_role, :state)";
+    return $this->setQuery($query, $user);
+  }
 
-    public function update($user)
-    {
-        $query = "UPDATE users SET username = :username, email = :email, phone = :phone, id_role = :id_role, state = :state WHERE id = :id";
-        return $this->setQuery($query, $user);
-    }
+  public function update($user)
+  {
+    $query = "UPDATE users SET username = :username, email = :email, phone = :phone, id_role = :id_role, state = :state WHERE id = :id";
+    return $this->setQuery($query, $user);
+  }
 
     public function delete($id)
     {

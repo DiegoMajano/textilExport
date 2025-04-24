@@ -1,19 +1,22 @@
 <?php
 
-require_once '../core/Controller.php';
-require_once '../model/CartsModel.php';
+require_once 'core/Controller.php';
+require_once 'model/CartsModel.php';
 
-class CartsController extends Controller {
-    private $cartsModel;
+class CartsController extends Controller
+{
+  private $cartsModel;
 
-    public function __construct() {
-        $this->cartsModel = new CartsModel();
-    }
+  public function __construct()
+  {
+    $this->cartsModel = new CartsModel();
+  }
 
-    public function index($user_id) {
-        $carts = $this->cartsModel->get($user_id);
-        $this->view('carts/index', ['carts' => $carts]);
-    }
+  public function index($user_id)
+  {
+    $carts = $this->cartsModel->get($user_id);
+    $this->view('carts/index', ['carts' => $carts]);
+  }
 
     public function create() {
         if (isset($_POST)) {

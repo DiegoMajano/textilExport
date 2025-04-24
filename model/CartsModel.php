@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-require_once '../core/Model.php';
+require_once './core/Model.php';
 
 class CartsModel extends Model {
 

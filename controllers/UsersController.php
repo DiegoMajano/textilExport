@@ -1,15 +1,17 @@
-<?php 
+<?php
 
 require_once 'core/Controller.php';
 require_once 'model/UsersModel.php';
 require_once 'core/Validator.php';
 
-class UsersController extends Controller {
-    private $model;
+class UsersController extends Controller
+{
+  private $model;
 
-    public function __construct() {
-        $this->model = new UsersModel();
-    }
+  public function __construct()
+  {
+    $this->model = new UsersModel();
+  }
 
     public function login(){
         $this->view('login.php');
