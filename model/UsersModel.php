@@ -16,6 +16,12 @@ class UsersModel extends Model
         }
     }
 
+    public function login($email, $password)
+    {
+        $query = "SELECT id_role, username FROM users WHERE email = :email AND password = :password";
+        return $this->getQuery($query, [':email' => $email, ':password' => $password]);
+    }
+
     public function create($user)
     {
         $query = "INSERT INTO users (username, email, password, phone, id_role, state) VALUES (:username, :email, :password, :phone, :id_role, :state)";
