@@ -18,7 +18,7 @@ class UsersModel extends Model
 
     public function login($email, $password)
     {
-        $query = "SELECT id_role, username FROM users WHERE email = :email AND password = :password";
+        $query = "SELECT id_role, username, role FROM users INNER JOIN roles on users.role_id = roles.role_id WHERE email = :email AND password = SHA2(:password,256)";
         return $this->getQuery($query, [':email' => $email, ':password' => $password]);
     }
 

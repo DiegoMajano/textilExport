@@ -9,11 +9,20 @@ class SalesController extends Controller {
     private $salesDetailsModel;
 
     public function __construct() {
+        if(empty($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
         $this->salesModel = new SalesModel();
         $this->salesDetailsModel = new SalesDetailsModel();
     }
 
     public function index() {
+        if(empty($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+        $user = $_SESSION['user'];
         $sales = $this->salesModel->get();
         $this->view('sales/index', ['sales' => $sales]);
     }

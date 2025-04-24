@@ -8,10 +8,19 @@ class ProductsController extends Controller {
     private $model;
 
     public function __construct() {
+        if(empty($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        } 
+        if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+            header('Location: /products');
+            exit;
+        }
         $this->model = new ProductsModel();
     }
 
     public function index() {
+        
         $data = [];
         $products = $this->model->get();
         $data['products'] = $products;
