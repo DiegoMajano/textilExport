@@ -24,8 +24,8 @@ class SalesDetailsModel extends Model {
     }
 
     public function delete($id) {
-        $query = "DELETE FROM sales_details WHERE id = :id";
-        return $this->setQuery($query, [':id' => $id]);
+        $query = "UPDATE sales_details SET state = :state WHERE id = :id";
+        return $this->setQuery($query, [':id' => $id, ':state' => 0]);
     }
 }
 

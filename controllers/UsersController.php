@@ -17,19 +17,47 @@ class UsersController extends Controller {
  
      public function authenticate(){
         $viewbag=array();
-        $email=$_POST['email'];
-        $password=$_POST['password'];
-        $result=$this->model->login($email,$password);
-        if(empty($result)){
-            $viewbag['error']='Usuario y/o contrasena incorrecta';
-            $this->view('login.php',$viewbag);
+        $email = htmlspecialchars(trim($_POST['email']));
+        $password = htmlspecialchars(trim($_POST['password']));
+
+        $result=$this->model->login($email);
+        if (empty($result) || !password_verify($password, $result[0]['password'])) {
+            $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
+            return $this->view('login.php', $viewbag);
         }
-        else{
-            $_SESSION['email']=$email;
-            $_SESSION['user']=$result[0]['username'];
-            $_SESSION['role_id']=$result[0]['role_id'];
-            $_SESSION['role']=$result[0]['role'];
-            header('location:'.PATH.'/home/index');
+
+        $_SESSION['email'] = $email;
+        $_SESSION['user'] = $result[0]['username'];
+        $_SESSION['role_id'] = $result[0]['role_id'];
+        $_SESSION['role'] = $result[0]['role'];
+        header('Location: ' . PATH . '/home/index');
+     }
+
+     public function register(){
+        $viewBag=array();
+
+        if(isset($_POST)){
+            $user = array(
+                'username' => $_POST['username'],
+                'email' => $_POST['email'],
+                'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                'phone' => $_POST['phone'],
+                'id_role' => $_POST['id_role'],
+                'state' => $_POST['state']
+            );
+
+            $success = $this->model->create($user);
+            if ($success) {
+                $viewBag['success'] = 'Usuario creado correctamente';
+                $_SESSION['email'] = $user['email'];
+                $_SESSION['user'] = $user['username'];            
+                return $this->view('index.php',$viewBag);
+                
+            } else {
+                $viewBag['error'] = 'Error al crear el usuario';
+                return $this->view('register.php', $viewBag);
+            }
+            
         }
      }
  
@@ -39,8 +67,7 @@ class UsersController extends Controller {
         unset($_SESSION['role_id']);
         unset($_SESSION['email']);
         $_SESSION=array();
-        $this->view('login.php');
-
+        return $this->view('login.php');
     }
 }
 ?>

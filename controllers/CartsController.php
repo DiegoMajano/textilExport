@@ -16,7 +16,7 @@ class CartsController extends Controller {
     }
 
     public function create() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST)) {
             $data = [
                 ':user_id' => $_POST['user_id'],
                 ':product_id' => $_POST['product_id'],
@@ -31,7 +31,7 @@ class CartsController extends Controller {
     }
 
     public function edit($id) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST)) {
             $data = [
                 ':id' => $id,
                 ':user_id' => $_POST['user_id'],
@@ -48,7 +48,7 @@ class CartsController extends Controller {
     }
 
     public function delete($id) {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST)) {
             $this->cartsModel->delete($id);
             header('Location: /carts');
         } else {
