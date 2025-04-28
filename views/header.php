@@ -7,6 +7,8 @@
   <title>Textil Export</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -27,14 +29,20 @@
                   aria-expanded="false">
                   <i class="fas fa-user me-1"></i><?= htmlspecialchars($_SESSION['user']) ?>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="userMenu">
-                  <li><a class="dropdown-item" href="<?= PATH ?>/users/profile"><i
-                        class="fas fa-user-circle me-1"></i>Perfil</a></li>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                  <li><span class="dropdown-item-text">
+                      <i class="fas fa-user-tag me-1"></i>
+                      <?= htmlspecialchars($_SESSION['role'] ?? 'Usuario') ?>
+                    </span></li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="<?= PATH ?>/users/logout"><i
-                        class="fas fa-sign-out-alt me-1"></i>Cerrar sesión</a></li>
+                  <li><a class="dropdown-item" href="<?= PATH ?>/users/profile">
+                      <i class="fas fa-user-circle me-1"></i>Perfil
+                    </a></li>
+                  <li><a class="dropdown-item" href="<?= PATH ?>/users/logout">
+                      <i class="fas fa-sign-out-alt me-1"></i>Cerrar sesión
+                    </a></li>
                 </ul>
               </div>
             <?php else: ?>

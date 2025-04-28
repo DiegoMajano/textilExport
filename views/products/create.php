@@ -1,71 +1,87 @@
-<?php include '../header.php'; ?>
+<!DOCTYPE html>
+<html lang="es">
 
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-          <h4 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Agregar Nuevo Producto</h4>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Producto</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      max-width: 600px;
+      margin-top: 50px;
+    }
+
+    .card {
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <h2 class="text-center">Registro de Producto</h2>
+      <form action="../controllers/new_product.php" method="POST" enctype="multipart/form-data">
+        <!-- Código del Producto -->
+        <div class="mb-3">
+          <label for="id" class="form-label">Código del Producto</label>
+          <input type="text" name="id" id="id" class="form-control" value="" readonly>
         </div>
-
-        <div class="card-body">
-          <form method="POST" action="<?= PATH ?>/products/create" enctype="multipart/form-data">
-            <div class="mb-3">
-              <label for="product" class="form-label">Nombre del Producto</label>
-              <input type="text" class="form-control" id="product" name="product" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Descripción</label>
-              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-            </div>
-
-            <div class="mb-3">
-              <label for="image_url" class="form-label">URL de la Imagen</label>
-              <input type="text" class="form-control" id="image_url" name="image_url" required>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="category_id" class="form-label">Categoría</label>
-                <select class="form-select" id="category_id" name="category_id" required>
-                  <option value="1">Ropa</option>
-                  <option value="2">Accesorios</option>
-                  <option value="3">Telas</option>
-                </select>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="price" class="form-label">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="price" name="price" required>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock" name="stock" required>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="state" class="form-label">Estado</label>
-                <select class="form-select" id="state" name="state" required>
-                  <option value="1">Activo</option>
-                  <option value="0">Inactivo</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="d-grid">
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i>Guardar Producto
-              </button>
-            </div>
-          </form>
+        <!-- Nombre del Producto -->
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre del Producto *</label>
+          <input type="text" name="name" id="name" class="form-control" required>
         </div>
-      </div>
+        <!-- Descripción -->
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripción *</label>
+          <textarea name="description" id="description" class="form-control" required></textarea>
+        </div>
+        <!-- Imagen -->
+        <div class="mb-3">
+          <label for="image" class="form-label">Imagen del Producto (JPG, JPEG,PNG) *</label>
+          <input type="file" name="image" id="image" class="form-control" accept=".jpg, .png, .jpeg" required>
+        </div>
+        <!-- Categoría -->
+        <div class="mb-3">
+          <label for="category" class="form-label">Categoría</label>
+          <select name="category" id="category" class="form-control">
+            <option value="Textil">Textil</option>
+            <option value="Promocional">Promocional</option>
+          </select>
+        </div>
+        <!-- Precio -->
+        <div class="mb-3">
+          <label for="price" class="form-label">Precio *</label>
+          <input type="number" name="price" id="price" class="form-control" min="0.01" step="0.01" required>
+        </div>
+        <!-- Existencias -->
+        <div class="mb-3">
+          <label for="stock" class="form-label">Existencias *</label>
+          <input type="number" name="stock" id="stock" class="form-control" min="0" required>
+        </div>
+        <!-- Botón de envío -->
+        <button type="submit" class="btn btn-primary w-100">Registrar Producto</button>
+      </form>
     </div>
   </div>
-</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
-<?php include '../footer.php'; ?>
+</html>

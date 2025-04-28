@@ -1,81 +1,49 @@
-<?php include '../header.php'; ?>
+<!-- MODAL PARA EDITAR PRODUCTO -->
+<div class="modal fade" id="Editar<?= $product['product_id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="./controllers/new_product.php" enctype="multipart/form-data">
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input id="name" name="name" class="form-control" value="<?= $product['product'] ?>" />
+            <label class="form-label" for="name">Nombre del producto</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input id="description" name="description" class="form-control" value="<?= $product['description'] ?>" />
+            <label class="form-label" for="description">Descripción del producto</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input value="<?= $product['image_url'] ?>" readonly name="oldImage" />
+            <input type="file" id="image" name="image" class="form-control" accept=".jpg, .png, .jpeg" />
+            <label class="form-label" for="image">Imagen del producto</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input id="category" name="category" class="form-control" value="<?= $product['category'] ?>" />
+            <label class="form-label" for="category">Categoría del producto</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input id="stock" name="stock" class="form-control" value="<?= $product['stock'] ?>" />
+            <label class="form-label" for="stock">Número de existencias del producto</label>
+          </div>
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input id="price" name="price" class="form-control" value="<?= $product['price'] ?>" />
+            <label class="form-label" for="price">Precio del producto</label>
+          </div>
 
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card shadow">
-        <div class="card-header bg-warning text-white">
-          <h4 class="mb-0"><i class="fas fa-edit me-2"></i>Editar Producto</h4>
-        </div>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
 
-        <div class="card-body">
-          <form method="POST" action="<?= PATH ?>/products/edit/<?= $product['id'] ?>">
-            <input type="hidden" name="id" value="<?= $product['id'] ?>">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 
-            <div class="mb-3">
-              <label for="product" class="form-label">Nombre del Producto</label>
-              <input type="text" class="form-control" id="product" name="product"
-                value="<?= htmlspecialchars($product['product']) ?>" required>
-            </div>
-
-            <div class="mb-3">
-              <label for="description" class="form-label">Descripción</label>
-              <textarea class="form-control" id="description" name="description" rows="3"
-                required><?= htmlspecialchars($product['description']) ?></textarea>
-            </div>
-
-            <div class="mb-3">
-              <label for="image_url" class="form-label">URL de la Imagen</label>
-              <input type="text" class="form-control" id="image_url" name="image_url"
-                value="<?= htmlspecialchars($product['image_url']) ?>" required>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="category_id" class="form-label">Categoría</label>
-                <select class="form-select" id="category_id" name="category_id" required>
-                  <option value="1" <?= $product['category_id'] == 1 ? 'selected' : '' ?>>Ropa</option>
-                  <option value="2" <?= $product['category_id'] == 2 ? 'selected' : '' ?>>Accesorios</option>
-                  <option value="3" <?= $product['category_id'] == 3 ? 'selected' : '' ?>>Telas</option>
-                </select>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="price" class="form-label">Precio</label>
-                <input type="number" step="0.01" class="form-control" id="price" name="price"
-                  value="<?= $product['price'] ?>" required>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock" name="stock" value="<?= $product['stock'] ?>"
-                  required>
-              </div>
-
-              <div class="col-md-6 mb-3">
-                <label for="state" class="form-label">Estado</label>
-                <select class="form-select" id="state" name="state" required>
-                  <option value="1" <?= $product['state'] == 1 ? 'selected' : '' ?>>Activo</option>
-                  <option value="0" <?= $product['state'] == 0 ? 'selected' : '' ?>>Inactivo</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <a href="<?= PATH ?>/products" class="btn btn-secondary me-md-2">
-                <i class="fas fa-times me-1"></i>Cancelar
-              </a>
-              <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save me-1"></i>Guardar Cambios
-              </button>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   </div>
 </div>
-
-<?php include '../footer.php'; ?>
+<!-- FIN MODAL PARA EDITAR PRODUCTO -->
