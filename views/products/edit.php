@@ -8,7 +8,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="./controllers/new_product.php" enctype="multipart/form-data">
+        <form method="POST" action="<?= PATH ?>/products/edit/<?= $product['product_id'] ?>"
+          enctype="multipart/form-data">
           <div data-mdb-input-init class="form-outline mb-4">
             <input id="name" name="name" class="form-control" value="<?= $product['product'] ?>" />
             <label class="form-label" for="name">Nombre del producto</label>

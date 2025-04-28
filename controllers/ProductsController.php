@@ -62,13 +62,30 @@ class ProductsController extends Controller
 
   public function edit($id)
   {
+    $product_id = implode(", ", $id);
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $product = $_POST;
-      $this->model->update($product);
-      header('Location: /products');
+      $productData = [
+        'product_id' => $product_id,
+        'product' => $_POST['name'],
+        'description' => $_POST['description'],
+        'category_id' => $_POST['category'] == 'Textil' ? 1 : 2,
+        'price' => $_POST['price'],
+        'stock' => $_POST['stock'],
+        'state' => 1,
+        'image_url' => 'https://definicion.de/wp-content/uploads/2012/01/imagen-vectorial.png'
+      ];
+
+      if ($this->model->update($productData)) {
+        $_SESSION['success'] = 'Producto actualizado correctamente';
+        header('Location: ' . PATH . '/products');
+        exit;
+      } else {
+        $_SESSION['error'] = 'Error al crear el producto';
+        $this->view('products/create.php');
+      }
     } else {
-      $product = $this->model->get($id);
-      $this->view('products/edit.php', ['product' => $product]);
+      $this->view('products/create.php');
     }
   }
 
