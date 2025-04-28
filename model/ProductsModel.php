@@ -19,7 +19,6 @@ class ProductsModel extends Model
                 LEFT JOIN categories c ON p.category_id = c.category_id";
       return $this->getQuery($query);
     }
-  }
 
   public function create($product)
   {
@@ -33,10 +32,28 @@ class ProductsModel extends Model
     return $this->setQuery($query, $product);
   }
 
-  public function delete($product_id) // Cambiar el nombre del parámetro
-  {
-    $query = "DELETE FROM products WHERE product_id = :product_id"; // Usar product_id
-    return $this->setQuery($query, [':product_id' => $product_id]);
-  }
+    public function delete($product_id)
+    {
+        $query = "UPDATE products SET state = :state WHERE product_id = :product_id";
+        return $this->setQuery($query, [':product_id' => $product_id, ':state' => 0]);
+    }
+
+    public function searchByName($name)
+    {
+        $query = "SELECT * FROM products WHERE product LIKE :name";
+        return $this->getQuery($query, [':name' => '%' . $name . '%']);
+    }
+
+    public function getByCategory($categoryId)
+    {
+        $query = "SELECT * FROM products WHERE category_id = :category_id AND state = 1";
+        return $this->getQuery($query, [':category_id' => $categoryId]);
+    }
+
+    public function getLowStock($threshold = 10)
+    {
+        $query = "SELECT * FROM products WHERE stock <= :threshold AND state = 1";
+        return $this->getQuery($query, [':threshold' => $threshold]);
+    }
 
 }

@@ -27,11 +27,10 @@ class SalesModel extends Model
     return $this->setQuery($query, $data);
   }
 
-  public function delete($id)
-  {
-    $query = "UPDATE FROM sales set state = :state  WHERE id = :id";
-    return $this->setQuery($query, [':id' => $id, ':state' => 0]);
-  }
+    public function delete($id) {
+        $query = "UPDATE sales SET state = :state  WHERE id = :id";
+        return $this->setQuery($query, [':id' => $id, ':state' => 0]);
+    }
 }
 
 
