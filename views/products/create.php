@@ -37,27 +37,31 @@
   <div class="container">
     <div class="card">
       <h2 class="text-center">Registro de Producto</h2>
-      <form action="../controllers/new_product.php" method="POST" enctype="multipart/form-data">
-        <!-- Código del Producto -->
-        <div class="mb-3">
-          <label for="id" class="form-label">Código del Producto</label>
-          <input type="text" name="id" id="id" class="form-control" value="" readonly>
-        </div>
+
+      <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger"><?= $_SESSION['error'];
+        unset($_SESSION['error']); ?></div>
+      <?php endif; ?>
+
+      <form action="<?= PATH ?>/products/create" method="POST" enctype="multipart/form-data">
         <!-- Nombre del Producto -->
         <div class="mb-3">
           <label for="name" class="form-label">Nombre del Producto *</label>
           <input type="text" name="name" id="name" class="form-control" required>
         </div>
+
         <!-- Descripción -->
         <div class="mb-3">
           <label for="description" class="form-label">Descripción *</label>
           <textarea name="description" id="description" class="form-control" required></textarea>
         </div>
-        <!-- Imagen -->
+
+        <!-- Imagen (ahora opcional) -->
         <div class="mb-3">
-          <label for="image" class="form-label">Imagen del Producto (JPG, JPEG,PNG) *</label>
-          <input type="file" name="image" id="image" class="form-control" accept=".jpg, .png, .jpeg" required>
+          <label for="image" class="form-label">Imagen del Producto (Opcional)</label>
+          <input type="file" name="image" id="image" class="form-control" accept=".jpg, .png, .jpeg">
         </div>
+
         <!-- Categoría -->
         <div class="mb-3">
           <label for="category" class="form-label">Categoría</label>
@@ -66,16 +70,19 @@
             <option value="Promocional">Promocional</option>
           </select>
         </div>
+
         <!-- Precio -->
         <div class="mb-3">
           <label for="price" class="form-label">Precio *</label>
           <input type="number" name="price" id="price" class="form-control" min="0.01" step="0.01" required>
         </div>
+
         <!-- Existencias -->
         <div class="mb-3">
           <label for="stock" class="form-label">Existencias *</label>
           <input type="number" name="stock" id="stock" class="form-control" min="0" required>
         </div>
+
         <!-- Botón de envío -->
         <button type="submit" class="btn btn-primary w-100">Registrar Producto</button>
       </form>
