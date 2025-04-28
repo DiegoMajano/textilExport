@@ -17,22 +17,26 @@ class UsersController extends Controller
         $this->view('login.php');
      }
  
-     public function authenticate(){
-        $viewbag=array();
-        $email = htmlspecialchars(trim($_POST['email']));
-        $password = htmlspecialchars(trim($_POST['password']));
-        $result=$this->model->login($email);
-        if (empty($result) || !password_verify($password, $result[0]['password'])) {
-            $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
-            return $this->view('login.php', $viewbag);
+    public function authenticate()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+    
+        $result = $this->model->login($email, $password);
+    
+        if (empty($result)) {
+          $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
+          $this->view('login.php', $viewbag);
+        } else {
+          $_SESSION['email'] = $email;
+          $_SESSION['user'] = $result[0]['username'];
+          $_SESSION['id_role'] = $result[0]['id_role'];
+          $_SESSION['role'] = $result[0]['role'];
+          echo $_SESSION['role'];
+          header('Location: ' . PATH . '/products/index');
+          exit;
         }
-
-        $_SESSION['email'] = $email;
-        $_SESSION['user'] = $result[0]['username'];
-        $_SESSION['role_id'] = $result[0]['role_id'];
-        $_SESSION['role'] = $result[0]['role'];
-        header('Location: ' . PATH . '/home/index');
-     }
+    }
 
      public function register(){
         $viewBag=array();
