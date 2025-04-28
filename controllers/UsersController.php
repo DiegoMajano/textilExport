@@ -20,21 +20,25 @@ class UsersController extends Controller
 
   public function authenticate()
   {
-    $viewbag = array();
     $email = $_POST['email'];
     $password = $_POST['password'];
+
     $result = $this->model->login($email, $password);
+
     if (empty($result)) {
-      $viewbag['error'] = 'Usuario y/o contrasena incorrecta';
+      $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
       $this->view('login.php', $viewbag);
     } else {
       $_SESSION['email'] = $email;
       $_SESSION['user'] = $result[0]['username'];
       $_SESSION['id_role'] = $result[0]['id_role'];
       $_SESSION['role'] = $result[0]['role'];
-      header('location:' . PATH . '/home/index');
+      echo $_SESSION['role'];
+      header('Location: ' . PATH . '/products/index');
+      exit;
     }
   }
+
 
   public function logout()
   {

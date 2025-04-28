@@ -61,7 +61,7 @@ class SalesController extends Controller
       }
 
       $this->salesModel->add($data);
-      header('Location: /sales'); // cambiar a vista correspondiente
+      header('Location: /sales');
     } else {
       $this->view('sales/create');
     }
