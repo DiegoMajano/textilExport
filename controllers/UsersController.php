@@ -21,7 +21,6 @@ class UsersController extends Controller
         $viewbag=array();
         $email = htmlspecialchars(trim($_POST['email']));
         $password = htmlspecialchars(trim($_POST['password']));
-
         $result=$this->model->login($email);
         if (empty($result) || !password_verify($password, $result[0]['password'])) {
             $viewbag['error'] = 'Usuario y/o contraseña incorrecta';

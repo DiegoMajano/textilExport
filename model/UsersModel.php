@@ -16,11 +16,21 @@ class UsersModel extends Model
         }
     }
 
-    public function login($email)
-    {
-        $query = "SELECT username, password, role_id, role FROM users INNER JOIN roles ON users.id_role = roles.role_id WHERE email = :email";
-        return $this->getQuery($query, [':email' => $email]);
-    }    
+  public function login($email, $password)
+  {
+    $query = "SELECT id_role, username, role 
+              FROM users 
+              INNER JOIN roles ON users.id_role = roles.role_id 
+              WHERE email = :email AND password = :password 
+              LIMIT 1";
+
+    $result = $this->getQuery($query, [
+      ':email' => $email,
+      ':password' => $password
+    ]);
+
+    return $result;
+  }
 
   public function create($user)
   {

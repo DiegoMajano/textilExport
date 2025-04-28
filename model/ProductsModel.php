@@ -5,15 +5,19 @@ require_once './core/Model.php';
 class ProductsModel extends Model
 {
 
-    public function get($id=null)
-    {
-        if ($id) {
-            $query = "SELECT * FROM products WHERE id = :id";
-            return $this->getQuery($query);
-        } else {    
-            $query = "SELECT * FROM products";
-            return $this->getQuery($query, [':id' => $id]);
-        }
+  public function get($product_id = null)
+  {
+    if ($product_id) {
+      $query = "SELECT p.*, c.category 
+                FROM products p
+                LEFT JOIN categories c ON p.category_id = c.category_id
+                WHERE p.product_id = :product_id";
+      return $this->getQuery($query, [':product_id' => $product_id]);
+    } else {
+      $query = "SELECT p.*, c.category
+                FROM products p
+                LEFT JOIN categories c ON p.category_id = c.category_id";
+      return $this->getQuery($query);
     }
 
   public function create($product)
@@ -24,14 +28,14 @@ class ProductsModel extends Model
 
   public function update($product)
   {
-    $query = "UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE id = :id";
+    $query = "UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id"; // Usar product_id
     return $this->setQuery($query, $product);
   }
 
-    public function delete($id)
+    public function delete($product_id)
     {
-        $query = "DELETE products SET state = :state WHERE id = :id";
-        return $this->setQuery($query, [':id' => $id, ':state' => 0]);
+        $query = "UPDATE products SET state = :state WHERE product_id = :product_id";
+        return $this->setQuery($query, [':product_id' => $product_id, ':state' => 0]);
     }
 
     public function searchByName($name)
@@ -53,6 +57,3 @@ class ProductsModel extends Model
     }
 
 }
-
-
-?>

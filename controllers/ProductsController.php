@@ -11,11 +11,7 @@ class ProductsController extends Controller
   public function __construct()
   {
     if (empty($_SESSION['user'])) {
-      header('Location: /login');
-      exit;
-    }
-    if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-      header('Location: /products');
+      header('Location: ' . PATH . '/users/login');
       exit;
     }
     $this->model = new ProductsModel();
@@ -23,11 +19,18 @@ class ProductsController extends Controller
 
   public function index()
   {
-
-    $data = [];
+    $search = $_GET['search'] ?? '';
     $products = $this->model->get();
-    $data['products'] = $products;
-    $this->view('products/index', $data);
+
+    // Filtrar por búsqueda si es necesario
+    if ($search) {
+      $products = array_filter($products, function ($product) use ($search) {
+        return stripos($product['product'], $search) !== false ||
+          stripos($product['description'], $search) !== false;
+      });
+    }
+
+    $this->view('products/index.php', ['products' => $products]);
   }
 
   public function create()
@@ -42,7 +45,7 @@ class ProductsController extends Controller
       header('Location: /products');
     } else {
       $data['message'] = 'Error creating product!';
-      $this->view('products/create', $data);
+      $this->view('products/create.php', $data);
     }
   }
 
@@ -54,7 +57,7 @@ class ProductsController extends Controller
       header('Location: /products');
     } else {
       $product = $this->model->get($id);
-      $this->view('products/edit', ['product' => $product]);
+      $this->view('products/edit.php', ['product' => $product]);
     }
   }
 
@@ -65,5 +68,3 @@ class ProductsController extends Controller
   }
 
 }
-
-?>
