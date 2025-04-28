@@ -41,16 +41,16 @@
           <div class="card-footer bg-white">
             <div class="d-flex justify-content-between">
               <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
-                data-bs-target="#productModal<?= $product['id'] ?>">
+                data-bs-target="#productModal<?= $product['product_id'] ?>">
                 <i class="fas fa-eye me-1"></i>Ver más
               </button>
 
               <?php if ($_SESSION['role'] == 'admin'): ?>
-                <a href="<?= PATH ?>/products/edit/<?= $product['id'] ?>" class="btn btn-outline-warning btn-sm">
+                <a href="<?= PATH ?>/products/edit/<?= $product['product_id'] ?>" class="btn btn-outline-warning btn-sm">
                   <i class="fas fa-edit me-1"></i>Editar
                 </a>
 
-                <form method="POST" action="<?= PATH ?>/products/delete/<?= $product['id'] ?>">
+                <form method="POST" action="<?= PATH ?>/products/delete/<?= $product['product_id'] ?>">
                   <button type="submit" class="btn btn-outline-danger btn-sm"
                     onclick="return confirm('¿Eliminar este producto?')">
                     <i class="fas fa-trash me-1"></i>Eliminar
@@ -62,8 +62,7 @@
         </div>
       </div>
 
-      <!-- Modal para ver detalles -->
-      <div class="modal fade" id="productModal<?= $product['id'] ?>" tabindex="-1" aria-hidden="true">
+      <div class="modal fade" id="productModal<?= $product['product_id'] ?>" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -88,4 +87,4 @@
   </div>
 </div>
 
-<?php include '../footer.php'; ?>
+<?php include './views/footer.php'; ?>
