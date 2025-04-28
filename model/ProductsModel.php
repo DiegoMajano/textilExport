@@ -9,14 +9,15 @@ class ProductsModel extends Model
   {
     if ($product_id) {
       $query = "SELECT p.*, c.category 
-                FROM products p
-                LEFT JOIN categories c ON p.category_id = c.category_id
-                WHERE p.product_id = :product_id";
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  WHERE p.product_id = :product_id AND p.state = 1";
       return $this->getQuery($query, [':product_id' => $product_id]);
     } else {
       $query = "SELECT p.*, c.category
-                FROM products p
-                LEFT JOIN categories c ON p.category_id = c.category_id";
+                  FROM products p
+                  LEFT JOIN categories c ON p.category_id = c.category_id
+                  WHERE p.state = 1";
       return $this->getQuery($query);
     }
   }

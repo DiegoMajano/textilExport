@@ -91,8 +91,9 @@ class ProductsController extends Controller
 
   public function delete($id)
   {
-    $this->model->delete($id);
-    header('Location: /products');
+    $product_id = implode(", ", $id);
+    $this->model->delete($product_id);
+    header('Location: ' . PATH . '/products');
   }
 
 }
