@@ -33,6 +33,7 @@ class UsersController extends Controller
       return $this->view('login.php', $viewbag);
     }
     $_SESSION['email'] = $email;
+    $_SESSION['user_id'] = $result[0]['user_id'];
     $_SESSION['user'] = $result[0]['username'];
     $_SESSION['role_id'] = $result[0]['role_id'];
     $_SESSION['role'] = $result[0]['role'];

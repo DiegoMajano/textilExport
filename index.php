@@ -22,5 +22,5 @@ $params = empty($slices[4]) ? [] : array_map(function ($part) {
 }, array_slice($slices, 4)); // Esto va a limmpiar parámetros si existen
 
 $cont = new $controller;
-$cont->$method($params);
+$cont->$method(...$params);
 ?>

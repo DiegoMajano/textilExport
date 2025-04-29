@@ -37,7 +37,13 @@
                   </li>
                   <li><a class="dropdown-item" href="<?= PATH ?>/users/profile">
                       <i class="fas fa-user-circle me-1"></i>Perfil
-                    </a></li>
+                    </a>
+                  </li>
+                  <li>
+                    <button class="btn btn-outline-dark position-relative me-3" onclick="toggleCart()">
+                      <i class="fas fa-shopping-cart"></i> Ver carrito
+                    </button>
+                  </li>
                   <li><a class="dropdown-item" href="<?= PATH ?>/users/logout">
                       <i class="fas fa-sign-out-alt me-1"></i>Cerrar sesión
                     </a></li>

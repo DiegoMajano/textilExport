@@ -24,10 +24,10 @@ class ProductsController extends Controller
     if ($search) {
       $products = $this->model->searchByName($search);
     } else {
-      $products = $this->model->get();
+      $products = $this->model->get();      
     }
 
-    $this->view('products/index.php', ['products' => $products]);
+    return $this->view('products/index.php', ['products' => $products]);
   }
 
   public function create()

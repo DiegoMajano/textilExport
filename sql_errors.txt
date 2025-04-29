@@ -1,0 +1,85 @@
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bxk6rpb3woicnbmovhxv.sale_details' doesn't exist
+Query: INSERT INTO sale_details (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => 1,
+  'product_id' => 39,
+  'quantity' => 2,
+  'price' => 10.0,
+  'state' => 1,
+)
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bxk6rpb3woicnbmovhxv.cart' doesn't exist
+Query: SELECT * FROM cart WHERE user_id = :user_id AND product_id = :product_id LIMIT 1
+Params: array (
+  'user_id' => '2',
+  'product_id' => '39',
+)
+SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bxk6rpb3woicnbmovhxv.cart' doesn't exist
+Query: SELECT * FROM cart WHERE user_id = :user_id AND product_id = :product_id LIMIT 1
+Params: array (
+  'user_id' => '2',
+  'product_id' => '39',
+)
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+Query: SELECT * FROM carts WHERE user_id = :user_id AND product_id = :product_id AND status = 1 LIMIT 1
+Params: array (
+  'user_id' => '2',
+  'product_id' => '39',
+)
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+Query: SELECT * FROM carts WHERE user_id = :user_id AND product_id = :product_id AND status = 1 LIMIT 1
+Params: array (
+  'user_id' => '2',
+  'product_id' => '39',
+)
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+Query: SELECT * FROM carts WHERE user_id = :user_id AND product_id = :product_id AND status = 1 LIMIT 1
+Params: array (
+  'user_id' => '2',
+  'product_id' => '39',
+)
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`bxk6rpb3woicnbmovhxv`.`sale_detail`, CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON UPDATE CASCADE)
+Query: INSERT INTO sale_detail (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => '0',
+  'product_id' => 46,
+  'quantity' => 1,
+  'price' => 35.0,
+  'state' => 1,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`bxk6rpb3woicnbmovhxv`.`sale_detail`, CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON UPDATE CASCADE)
+Query: INSERT INTO sale_detail (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => '0',
+  'product_id' => 39,
+  'quantity' => 1,
+  'price' => 10.0,
+  'state' => 1,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`bxk6rpb3woicnbmovhxv`.`sale_detail`, CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON UPDATE CASCADE)
+Query: INSERT INTO sale_detail (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => '0',
+  'product_id' => 43,
+  'quantity' => 2,
+  'price' => 21.0,
+  'state' => 1,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`bxk6rpb3woicnbmovhxv`.`sale_detail`, CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON UPDATE CASCADE)
+Query: INSERT INTO sale_detail (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => '0',
+  'product_id' => 39,
+  'quantity' => 1,
+  'price' => 10.0,
+  'state' => 1,
+)
+Last ID: 0
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`bxk6rpb3woicnbmovhxv`.`sale_detail`, CONSTRAINT `sale_detail_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `sales` (`sale_id`) ON UPDATE CASCADE)
+Query: INSERT INTO sale_detail (sale_id, product_id, quantity, price, state) VALUES (:sale_id, :product_id, :quantity, :price, :state)
+Params: array (
+  'sale_id' => '0',
+  'product_id' => 43,
+  'quantity' => 2,
+  'price' => 21.0,
+  'state' => 1,
+)

@@ -18,7 +18,7 @@ class UsersModel extends Model
 
   public function login($email, $password)
   {
-    $query = "SELECT id_role, username, role 
+    $query = "SELECT id_role, username, role, user_id 
               FROM users 
               INNER JOIN roles ON users.id_role = roles.role_id 
               WHERE email = :email AND password = :password 

@@ -23,7 +23,6 @@ abstract class Model
 
   protected function getQuery($query, $params = array())
   {
-
     try {
       $this->openDB();
 
@@ -54,6 +53,10 @@ abstract class Model
       $this->closeDB();
       return $affectedRows;
     } catch (Exception $e) {
+      file_put_contents("sql_errors.txt", $e->getMessage() . PHP_EOL, FILE_APPEND);
+      file_put_contents("sql_errors.txt", "Query: " . $query . PHP_EOL, FILE_APPEND);
+      file_put_contents("sql_errors.txt", "Params: " . var_export($params, true) . PHP_EOL, FILE_APPEND);
+
       $this->closeDB();
       echo $e->getMessage();
     }

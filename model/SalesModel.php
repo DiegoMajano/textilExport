@@ -17,8 +17,24 @@ class SalesModel extends Model
 
   public function add($data)
   {
-    $query = "INSERT INTO sales (user_id, total, date, state) VALUES (:user_id, :total, :date, :state)";
-    return $this->setQuery($query, $data);
+      try {
+        $this->openDB();
+
+        $query = "INSERT INTO sales (user_id, total, date, state)
+                  VALUES (:user_id, :total, :date, :state)";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($data);
+
+        $lastId = $this->conn->lastInsertId();
+
+        $this->closeDB();
+        return $lastId;
+
+    } catch (PDOException $e) {
+        $this->closeDB();
+        echo $e->getMessage();
+    }
   }
 
   public function update($data)
@@ -27,10 +43,33 @@ class SalesModel extends Model
     return $this->setQuery($query, $data);
   }
 
-    public function delete($id) {
-        $query = "UPDATE sales SET state = :state  WHERE id = :id";
-        return $this->setQuery($query, [':id' => $id, ':state' => 0]);
-    }
+  public function delete($id) {
+      $query = "UPDATE sales SET state = :state  WHERE id = :id";
+      return $this->setQuery($query, [':id' => $id, ':state' => 0]);
+  }
+
+  public function getByIdWithDetails($sale_id)
+  {
+      $query = "SELECT s.*, u.username, u.email, u.phone
+                FROM sales s
+                JOIN users u ON s.user_id = u.user_id
+                WHERE s.sale_id = :sale_id";
+      $result = $this->getQuery($query, ['sale_id' => $sale_id]);
+
+      if (!$result || count($result) === 0) return null;
+
+      $sale = $result[0]; // Solo una venta
+
+      $detailsQuery = "SELECT sd.*, p.product
+                      FROM sale_detail sd
+                      JOIN products p ON sd.product_id = p.product_id
+                      WHERE sd.sale_id = :sale_id";
+      $details = $this->getQuery($detailsQuery, ['sale_id' => $sale_id]);
+      $sale['details'] = $details;
+      return $sale;
+  }
+
+
 }
 
 
