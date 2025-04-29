@@ -23,9 +23,15 @@
             <input type="file" id="image" name="image" class="form-control" accept=".jpg, .png, .jpeg" />
             <label class="form-label" for="image">Imagen del producto</label>
           </div>
-          <div data-mdb-input-init class="form-outline mb-4">
-            <input id="category" name="category" class="form-control" value="<?= $product['category'] ?>" />
-            <label class="form-label" for="category">Categoría del producto</label>
+          <div class="mb-3">
+            <label for="category" class="form-label">Categoría</label>
+            <select name="category" id="category" class="form-control">
+              <option value="Cotton">Cotton</option>
+              <option value="Linen">Linen</option>
+              <option value="Silk">Silk</option>
+              <option value="Synthetic">Synthetic</option>
+              <option value="Wool">Wool</option>
+            </select>
           </div>
           <div data-mdb-input-init class="form-outline mb-4">
             <input id="stock" name="stock" class="form-control" value="<?= $product['stock'] ?>" />
