@@ -20,14 +20,11 @@ class ProductsController extends Controller
   public function index()
   {
     $search = $_GET['search'] ?? '';
-    $products = $this->model->get();
 
-    // Filtrar por búsqueda si es necesario
     if ($search) {
-      $products = array_filter($products, function ($product) use ($search) {
-        return stripos($product['product'], $search) !== false ||
-          stripos($product['description'], $search) !== false;
-      });
+      $products = $this->model->searchByName($search);
+    } else {
+      $products = $this->model->get();
     }
 
     $this->view('products/index.php', ['products' => $products]);
@@ -97,3 +94,4 @@ class ProductsController extends Controller
   }
 
 }
+?>

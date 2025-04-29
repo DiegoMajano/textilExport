@@ -14,9 +14,13 @@ $url = $_SERVER['REQUEST_URI'];
 $slices = explode('/', $url);
 // echo var_dump($slices).'<br>';
 
-$controller = empty($slices[2]) ? 'IndexController' : $slices[2] . 'Controller';
-$method = empty($slices[3]) ? 'index' : $slices[3];
-$params = empty($slices[4]) ? [] : array_slice($slices, 4);
+$controller_part = explode('?', $slices[2])[0] ?? 'IndexController'; // Pa obtener solo la parte antes del '?'
+$controller = $controller_part . 'Controller';
+$method = empty($slices[3]) ? 'index' : explode('?', $slices[3])[0]; // Pa obtener el método
+$params = empty($slices[4]) ? [] : array_map(function ($part) {
+  return explode('?', $part)[0];
+}, array_slice($slices, 4)); // Esto va a limmpiar parámetros si existen
 
 $cont = new $controller;
 $cont->$method($params);
+?>
