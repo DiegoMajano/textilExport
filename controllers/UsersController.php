@@ -45,6 +45,11 @@ class UsersController extends Controller
     $viewBag = array();
 
     if (isset($_POST)) {
+      $errors = validateRegisterFields($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone']);
+      if (count($errors) > 0) {
+        $viewBag['error'] = $errors;
+        return $this->view('register.php', $viewBag);
+      }
       $user = array(
         'username' => $_POST['username'],
         'email' => $_POST['email'],
