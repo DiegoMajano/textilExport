@@ -1,8 +1,10 @@
 <?php 
 
-class IndexController{
-    public function index($params){
-        echo 'soy index method<br>';
+require_once 'core/Controller.php';
+
+class IndexController extends Controller{
+    public function index(){
+        header('location: products/'); 
     }
 
     public function error($params){

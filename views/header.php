@@ -35,8 +35,8 @@
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="<?= PATH ?>/users/profile">
-                      <i class="fas fa-user-circle me-1"></i>Perfil
+                  <li><a class="dropdown-item" href="<?= PATH ?>/dashboard">
+                      <i class="fas fa-user-circle me-1"></i>Dashboard
                     </a>
                   </li>
                   <li>

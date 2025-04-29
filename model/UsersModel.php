@@ -8,10 +8,10 @@ class UsersModel extends Model
   public function get($id = null)
   {
     if ($id) {
-      $query = "SELECT * FROM users WHERE id = :id";
+      $query = "SELECT * FROM users WHERE id = :id and state = 1";
       return $this->getQuery($query, [':id' => $id]);
     } else {
-      $query = "SELECT * FROM users";
+      $query = "SELECT * FROM users INNER JOIN roles on users.id_role = role_id where users.state = 1";
       return $this->getQuery($query);
     }
   }
@@ -22,6 +22,7 @@ class UsersModel extends Model
               FROM users 
               INNER JOIN roles ON users.id_role = roles.role_id 
               WHERE email = :email AND password = :password 
+              AND users.state = 1
               LIMIT 1";
 
     $result = $this->getQuery($query, [
@@ -40,14 +41,14 @@ class UsersModel extends Model
 
   public function update($user)
   {
-    $query = "UPDATE users SET username = :username, email = :email, phone = :phone, id_role = :id_role, state = :state WHERE id = :id";
+    $query = "UPDATE users SET username = :username, email = :email, phone = :phone, id_role = :id_role, state = :state WHERE user_id = :user_id";
     return $this->setQuery($query, $user);
   }
 
-  public function delete($id)
+  public function delete($user_id)
   {
-    $query = "UPDATE users SET state = :state WHERE id = :id";
-    return $this->setQuery($query, [':id' => $id]);
+    $query = "UPDATE users SET state = :state WHERE user_id = :user_id";
+    return $this->setQuery($query, [':user_id' => $user_id, ':state' => '0']);
   }
 
   public function findByEmail($email)
@@ -68,17 +69,15 @@ class UsersModel extends Model
     return $this->getQuery($query, [':keyword' => "%$keyword%"]);
   }
 
-  public function getActiveUsers()
+  
+  public function getTotalUsers()
   {
-    $query = "SELECT * FROM users WHERE state = 1";
-    return $this->getQuery($query);
+      $query = "SELECT COUNT(*) AS total FROM users where state = 1";
+      $result = $this->getQuery($query);
+      return $result[0]['total'];
   }
 
-  public function countUsers()
-  {
-    $query = "SELECT COUNT(*) as total FROM users WHERE state = 1";
-    return $this->getQuery($query)[0]['total'];
-  }
+  
 
   public function countByRole()
   {

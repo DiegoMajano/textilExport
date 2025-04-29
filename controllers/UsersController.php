@@ -74,6 +74,21 @@ class UsersController extends Controller
     }
   }
 
+public function update($user_id)
+{
+    $data = [
+        'username' => $_POST['username'],
+        'email'    => $_POST['email'],
+        'phone'    => $_POST['phone'],
+        'id_role'  =>(int) $_POST['id_role'],
+        'user_id'  => (int)$user_id,
+        'state' => 1
+    ];
+
+    $this->model->update($data);
+    header("Location: " . PATH . "/users/dashboard");
+}
+
   public function logout()
   {
 
@@ -82,6 +97,20 @@ class UsersController extends Controller
     unset($_SESSION['email']);
     $_SESSION = array();
     return $this->view('login.php');
+  }
+
+  public function delete($user_id)
+  {
+    $this->model->delete($user_id);
+    header("Location: " . PATH . "/users/dashboard");
+  }
+
+  public function list(){
+    $users = $this->model->get();
+    $viewBag = array(
+      'users' => $users
+    );
+    $this->view('manageUsers.php', $viewBag);
   }
 }
 ?>

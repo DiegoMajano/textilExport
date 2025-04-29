@@ -70,6 +70,26 @@ class SalesModel extends Model
   }
 
 
+    public function getTotalSales()
+    {
+        $query = "SELECT COUNT(*) AS total FROM sales";
+        $result = $this->getQuery($query);
+        return $result[0]['total'];
+    }
+
+    public function getTotalRevenue()
+    {
+        $query = "SELECT SUM(total) AS revenue FROM sales";
+        $result = $this->getQuery($query);
+        return $result[0]['revenue'];
+    }
+
+    public function getRecentSales()
+    {
+        $query = "SELECT * FROM sales ORDER BY date DESC LIMIT 5";
+        return $this->getQuery($query);
+    }
+
 }
 
 
