@@ -36,6 +36,9 @@
             <h5 class="card-title"><?= htmlspecialchars($product['product']) ?></h5>
             <p class="text-muted"><?= htmlspecialchars($product['category'] ?? 'Sin categoría') ?></p>
             <p class="card-text">$<?= number_format($product['price'], 2) ?></p>
+            <?php if ($product['stock'] == 0): ?>
+              <span class="badge bg-danger">Agotado</span>
+            <?php endif; ?>
           </div>
 
           <div class="card-footer bg-white">
@@ -75,8 +78,15 @@
                 alt="<?= htmlspecialchars($product['product']) ?>">
               <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
               <p><strong>Precio:</strong> $<?= number_format($product['price'], 2) ?></p>
-              <p><strong>Stock:</strong> <?= $product['stock'] ?></p>
+              <p><strong>Stock:</strong>
+                <?php if ($product['stock'] == 0): ?>
+                  <span class="text-danger">¡Agotado! Pronto habrá más.</span>
+                <?php else: ?>
+                  <?= $product['stock'] ?>
+                <?php endif; ?>
+              </p>
               <p><strong>Categoría:</strong> <?= htmlspecialchars($product['category'] ?? 'Sin categoría') ?></p>
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

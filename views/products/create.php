@@ -38,9 +38,15 @@
     <div class="card">
       <h2 class="text-center">Registro de Producto</h2>
 
-      <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger"><?= $_SESSION['error'];
-        unset($_SESSION['error']); ?></div>
+      <?php if (isset($_SESSION['error']) && is_array($_SESSION['error'])): ?>
+        <div class="alert alert-danger">
+          <ul>
+            <?php foreach ($_SESSION['error'] as $error): ?>
+              <li><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </div>
+        <?php unset($_SESSION['error']); ?>
       <?php endif; ?>
 
       <form action="<?= PATH ?>/products/create" method="POST" enctype="multipart/form-data">
@@ -66,8 +72,11 @@
         <div class="mb-3">
           <label for="category" class="form-label">Categoría</label>
           <select name="category" id="category" class="form-control">
-            <option value="Textil">Textil</option>
-            <option value="Promocional">Promocional</option>
+            <option value="Cotton">Cotton</option>
+            <option value="Linen">Linen</option>
+            <option value="Silk">Silk</option>
+            <option value="Synthetic">Synthetic</option>
+            <option value="Wool">Wool</option>
           </select>
         </div>
 
