@@ -17,6 +17,10 @@ class UsersController extends Controller
   {
     $this->view('login.php');
   }
+  public function register()
+  {
+    $this->view('register.php');
+  }
 
   public function authenticate()
   {
@@ -36,7 +40,7 @@ class UsersController extends Controller
     header('Location: ' . PATH . '/products/index');
   }
 
-  public function register()
+  public function createUser()
   {
     $viewBag = array();
 
@@ -44,10 +48,10 @@ class UsersController extends Controller
       $user = array(
         'username' => $_POST['username'],
         'email' => $_POST['email'],
-        'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+        'password' => $_POST['password'],
         'phone' => $_POST['phone'],
-        'id_role' => $_POST['id_role'],
-        'state' => $_POST['state']
+        'id_role' => $_POST['id_role'] ?? 2,
+        'state' => $_POST['state'] ?? 1
       );
 
       $success = $this->model->create($user);
@@ -55,7 +59,7 @@ class UsersController extends Controller
         $viewBag['success'] = 'Usuario creado correctamente';
         $_SESSION['email'] = $user['email'];
         $_SESSION['user'] = $user['username'];
-        return $this->view('index.php', $viewBag);
+        return $this->view('login.php', $viewBag);
 
       } else {
         $viewBag['error'] = 'Error al crear el usuario';

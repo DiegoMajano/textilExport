@@ -10,10 +10,10 @@ class ProductsController extends Controller
 
   public function __construct()
   {
-    if (empty($_SESSION['user'])) {
-      header('Location: ' . PATH . '/users/login');
-      exit;
-    }
+    // if (empty($_SESSION['user'])) {
+    //   header('Location: ' . PATH . '/users/login');
+    //   exit;
+    // }
     $this->model = new ProductsModel();
   }
 

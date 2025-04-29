@@ -8,13 +8,10 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 
 <body>
   <header>
-    <div class="container">
-    </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
       <div class="container">
         <h1 id="CompanyName" class="text-center my-3">Textil Export</h1>
@@ -23,7 +20,8 @@
             <a class="nav-link text-white" href="<?= PATH ?>">Inicio</a>
           </li>
           <li class="nav-item">
-            <?php if (isset($_SESSION['user'])): ?>
+            <?php if (isset($_SESSION['user']) && isset($_SESSION['role'])): ?>
+              <!-- Usuario logueado con rol definido -->
               <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown"
                   aria-expanded="false">
@@ -32,7 +30,7 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
                   <li><span class="dropdown-item-text">
                       <i class="fas fa-user-tag me-1"></i>
-                      <?= htmlspecialchars($_SESSION['role'] ?? 'Usuario') ?>
+                      <?= htmlspecialchars($_SESSION['role']) ?>
                     </span></li>
                   <li>
                     <hr class="dropdown-divider">
@@ -46,6 +44,7 @@
                 </ul>
               </div>
             <?php else: ?>
+              <!-- Usuario no logueado o sin rol definido -->
               <a class="btn btn-outline-light" href="<?= PATH ?>/users/login">
                 <i class="fas fa-sign-in-alt me-1"></i>Iniciar sesión
               </a>
