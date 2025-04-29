@@ -32,7 +32,6 @@ class UsersController extends Controller
       $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
       return $this->view('login.php', $viewbag);
     }
-
     $_SESSION['email'] = $email;
     $_SESSION['user'] = $result[0]['username'];
     $_SESSION['role_id'] = $result[0]['role_id'];
