@@ -1,7 +1,7 @@
 <?php include './views/header.php'; ?>
 
 <div class="container mt-4">
-  <?php if ($_SESSION['role'] == 'admin'): ?>
+  <?php if ($_SESSION['role'] == 'Admin'): ?>
     <div class="d-flex justify-content-between mb-4">
       <a href="<?= PATH ?>/products/create" class="btn btn-primary">
         <i class="fas fa-plus me-2"></i>Agregar producto
@@ -34,7 +34,7 @@
 
           <div class="card-body">
             <h5 class="card-title"><?= htmlspecialchars($product['product']) ?></h5>
-            <p class="text-muted"><?= htmlspecialchars($product['category_name'] ?? 'Sin categoría') ?></p>
+            <p class="text-muted"><?= htmlspecialchars($product['category'] ?? 'Sin categoría') ?></p>
             <p class="card-text">$<?= number_format($product['price'], 2) ?></p>
           </div>
 
@@ -45,10 +45,11 @@
                 <i class="fas fa-eye me-1"></i>Ver más
               </button>
 
-              <?php if ($_SESSION['role'] == 'admin'): ?>
-                <a href="<?= PATH ?>/products/edit/<?= $product['product_id'] ?>" class="btn btn-outline-warning btn-sm">
-                  <i class="fas fa-edit me-1"></i>Editar
-                </a>
+              <?php if ($_SESSION['role'] === 'Admin'): ?>
+                <button type="button" class="btn btn-warning text-white w-auto fw-bold" data-bs-toggle="modal"
+                  data-bs-target="#Editar<?= $product['product_id'] ?>">
+                  Editar
+                </button>
 
                 <form method="POST" action="<?= PATH ?>/products/delete/<?= $product['product_id'] ?>">
                   <button type="submit" class="btn btn-outline-danger btn-sm"
@@ -75,7 +76,7 @@
               <p><?= nl2br(htmlspecialchars($product['description'])) ?></p>
               <p><strong>Precio:</strong> $<?= number_format($product['price'], 2) ?></p>
               <p><strong>Stock:</strong> <?= $product['stock'] ?></p>
-              <p><strong>Categoría:</strong> <?= htmlspecialchars($product['category_name'] ?? 'Sin categoría') ?></p>
+              <p><strong>Categoría:</strong> <?= htmlspecialchars($product['category'] ?? 'Sin categoría') ?></p>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -83,6 +84,8 @@
           </div>
         </div>
       </div>
+
+      <?php include './views/products/edit.php'; ?>
     <?php endforeach; ?>
   </div>
 </div>

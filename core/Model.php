@@ -1,10 +1,10 @@
 <?php
 abstract class Model
 {
-  private $host = 'localhost';
-  private $user = 'root';
-  private $password = '';
-  private $dbName = 'textilexport';
+  private $host = 'bxk6rpb3woicnbmovhxv-mysql.services.clever-cloud.com';
+  private $user = 'uuhio29ytrxz8qyt';
+  private $password = '24xciYJMRk3un45dAlzT';
+  private $dbName = 'bxk6rpb3woicnbmovhxv';
   protected $conn;
 
   protected function openDB()
