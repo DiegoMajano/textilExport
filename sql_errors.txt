@@ -171,3 +171,75 @@ Params: array (
   ':description' => NULL,
   ':state' => NULL,
 )
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '40',
+  'product' => 'Bolígrafo promocional',
+  'description' => 'Un bolígrafo elegante y funcional, ideal para regalos corporativos. Incluye un espacio personalizable para el logo de la empresa, perfecto para promociones y eventos.',
+  'category_id' => 1,
+  'price' => '1.51',
+  'stock' => '0',
+  'state' => 1,
+  'image_url' => NULL,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '43',
+  'product' => 'Polo deportivo',
+  'description' => 'Un polo ligero y transpirable, diseñado para actividades deportivas. Fabricado en poliéster de alta calidad, ofrece comodidad y durabilidad durante el ejercicio.',
+  'category_id' => 1,
+  'price' => 21.5,
+  'stock' => 40,
+  'state' => 1,
+  'image_url' => NULL,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '40',
+  'product' => 'Bolígrafo promocional',
+  'description' => 'Un bolígrafo elegante y funcional, ideal para regalos corporativos. Incluye un espacio personalizable para el logo de la empresa, perfecto para promociones y eventos.',
+  'category_id' => 1,
+  'price' => 1.51,
+  'stock' => 0,
+  'state' => 1,
+  'image_url' => NULL,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '40',
+  'product' => 'Bolígrafo promocional',
+  'description' => 'Un bolígrafo elegante y funcional, ideal para regalos corporativos. Incluye un espacio personalizable para el logo de la empresa, perfecto para promociones y eventos.',
+  'category_id' => 1,
+  'price' => 1.51,
+  'stock' => 0,
+  'state' => 1,
+  'image_url' => NULL,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '40',
+  'product' => 'Bolígrafo promocional',
+  'description' => 'Un bolígrafo elegante y funcional, ideal para regalos corporativos. Incluye un espacio personalizable para el logo de la empresa, perfecto para promociones y eventos.',
+  'category_id' => 1,
+  'price' => 1.51,
+  'stock' => 0,
+  'state' => 1,
+  'image_url' => NULL,
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'image_url' cannot be null
+Query: UPDATE products SET product = :product, description = :description, image_url = :image_url, category_id = :category_id, price = :price, stock = :stock, state = :state WHERE product_id = :product_id
+Params: array (
+  'product_id' => '40',
+  'product' => 'Bolígrafo promocional',
+  'description' => 'Un bolígrafo elegante y funcional, ideal para regalos corporativos. Incluye un espacio personalizable para el logo de la empresa, perfecto para promociones y eventos.',
+  'category_id' => 1,
+  'price' => 1.51,
+  'stock' => 0,
+  'state' => 1,
+  'image_url' => NULL,
+)

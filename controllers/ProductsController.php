@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'core/Controller.php';
 require_once './model/ProductsModel.php';
 include_once './utils/validate_fields.php';
@@ -106,6 +110,8 @@ public function edit($id)
   require_once __DIR__ . '/../services/cloudinarySDK.php';
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $_POST['price'] = (float) $_POST['price'];
+    $_POST['stock'] = (int) $_POST['stock'];
     $errors = validateProductFields($_POST['name'], $_POST['description'], $_POST['category'], $_POST['price'], $_POST['stock']);
     if (count($errors) > 0) {
       $_SESSION['error'] = $errors;
@@ -129,9 +135,13 @@ public function edit($id)
       return;
     }
 
-    // Obtener la URL actual del producto
-    $product = $this->model->get($product_id); 
-    $oldImageUrl = $product['image_url'];
+    $oldImageUrl = $_POST['oldImage'] ?? null;
+
+  if (!$oldImageUrl) {
+    $_SESSION['error'] = 'Falta la imagen anterior del producto';
+    header('Location: ' . PATH . '/products');
+    return;
+}
 
     // Subir nueva imagen si fue proporcionada
     $imageUrl = $oldImageUrl;
@@ -151,8 +161,8 @@ public function edit($id)
       'product' => $_POST['name'],
       'description' => $_POST['description'],
       'category_id' => $category_id,
-      'price' => $_POST['price'],
-      'stock' => $_POST['stock'],
+      'price' => (float) $_POST['price'],
+      'stock' => (int) $_POST['stock'],
       'state' => 1,
       'image_url' => $imageUrl
     ];
