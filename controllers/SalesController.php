@@ -1,6 +1,7 @@
 <?php
 
 require_once 'vendor/autoload.php';
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -8,12 +9,14 @@ require_once 'core/Controller.php';
 require_once 'model/SalesModel.php';
 require_once 'model/SalesDetailsModel.php';
 require_once 'model/CartsModel.php';
+require_once 'model/ProductsModel.php';
 
 class SalesController extends Controller
 {
   private $salesModel;
   private $salesDetailsModel;
   private $cartsModel;
+  private $productsModel;
 
   public function __construct()
   {
@@ -24,6 +27,7 @@ class SalesController extends Controller
     $this->salesModel = new SalesModel();
     $this->salesDetailsModel = new SalesDetailsModel();
     $this->cartsModel = new CartsModel();
+    $this->productsModel = new ProductsModel();
   }
 
   public function index()
@@ -38,63 +42,70 @@ class SalesController extends Controller
   }
   public function show($id)
   {
-      $sale = $this->salesModel->getByIdWithDetails($id);
+    $sale = $this->salesModel->getByIdWithDetails($id);
 
-      if (!$sale) {
-          echo "Compra no encontrada.";
-          return;
-      }
+    if (!$sale) {
+      echo "Compra no encontrada.";
+      return;
+    }
 
-      include './views/sales/show.php';
+    include './views/sales/show.php';
   }
 
 
   public function create()
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $user_id = $_POST['user_id'];
-        $products = $_POST['products'];
+      $user_id = $_POST['user_id'];
+      $products = $_POST['products'];
+      $total = 0;
 
-        $total = 0;
-        foreach ($products as $product) {
-          $total += $product['quantity'] * $product['price'];
+      foreach ($products as $product_id => $prod) {
+        $stock = $this->productsModel->getStock($product_id);
+        if ($stock < $prod['quantity']) {
+          $_SESSION['error'] = "Stock insuficiente para el producto ID $product_id.";
+          header('Location: ' . PATH . '/sales/create');
+          return;
         }
+      }
 
-        $ventaData = [
-          'user_id' => $user_id,
-          'total' => $total,
-          'date' => date('Y-m-d H:i:s'),
+      foreach ($products as $product) {
+        $total += $product['quantity'] * $product['price'];
+      }
+
+      $ventaData = [
+        'user_id' => $user_id,
+        'total' => $total,
+        'date' => date('Y-m-d H:i:s'),
+        'state' => 1
+      ];
+      $ventaId = $this->salesModel->add($ventaData);
+
+      foreach ($products as $product_id => $prod) {
+        $details = [
+          'sale_id' => $ventaId,
+          'product_id' => $product_id,
+          'quantity' => (int)$prod['quantity'],
+          'price' => (float)$prod['price'],
           'state' => 1
         ];
-        $ventaId = $this->salesModel->add($ventaData); 
+        $this->salesDetailsModel->add($details);
+        $this->productsModel->decreaseStock($product_id, $prod['quantity']);
+      }
 
-        foreach ($products as $product_id => $prod) {
-          $details = [
-            'sale_id' => $ventaId,
-            'product_id' => $product_id,
-            'quantity' => (int)$prod['quantity'],
-            'price' => (float)$prod['price'],
-            'state' => 1
-          ];
-          file_put_contents('log.txt', json_encode($details) . PHP_EOL, FILE_APPEND);
-
-          $result = $this->salesDetailsModel->add($details);
-          file_put_contents("log_details_add.txt", "Resultado: " . var_export($result, true) . PHP_EOL, FILE_APPEND);
-        }
-
-        $this->cartsModel->clearCart($user_id);
-
-        header('Location: ' . PATH . '/sales/show/' . $ventaId);
+      $this->cartsModel->clearCart($user_id);
+      header('Location: ' . PATH . '/sales/show/' . $ventaId);
     } else {
-        $this->view('sales/create');
+      $this->view('sales/create');
     }
   }
+
 
   public function pdf($sale_id)
   {
     $sale = $this->salesModel->getByIdWithDetails($sale_id);
     if (!$sale) {
-        die("Venta no encontrada.");
+      die("Venta no encontrada.");
     }
 
     ob_start();
@@ -144,16 +155,12 @@ class SalesController extends Controller
 
   public function adminSales()
   {
-      if (!isset($_SESSION['role']) || $_SESSION['role'] != "Admin") {
-        header('Location: ' . PATH . '/users/login');
-        exit;
-      }
+    if (!isset($_SESSION['role']) || $_SESSION['role'] != "Admin") {
+      header('Location: ' . PATH . '/users/login');
+      exit;
+    }
 
-      $sales = $this->salesModel->getAllSalesWithUser();
-      $this->view('sales/admin_sales.php', ['sales' => $sales]);
+    $sales = $this->salesModel->getAllSalesWithUser();
+    $this->view('sales/admin_sales.php', ['sales' => $sales]);
   }
-
 }
-
-
-?>

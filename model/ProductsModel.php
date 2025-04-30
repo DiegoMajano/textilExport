@@ -58,4 +58,20 @@ class ProductsModel extends Model
     return $this->getQuery($query, [':threshold' => $threshold]);
   }
 
+  public function getStock($product_id)
+{
+  $query = "SELECT stock FROM products WHERE product_id = :product_id";
+  $result = $this->getQuery($query, [':product_id' => $product_id]);
+  return $result[0]['stock'] ?? 0;
+}
+
+public function decreaseStock($product_id, $quantity)
+{
+  $query = "UPDATE products SET stock = stock - :quantity WHERE product_id = :product_id AND stock >= :quantity";
+  return $this->setQuery($query, [
+    ':product_id' => $product_id,
+    ':quantity' => $quantity
+  ]);
+}
+
 }
