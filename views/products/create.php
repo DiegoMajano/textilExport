@@ -65,7 +65,7 @@
         <!-- Imagen (ahora opcional) -->
         <div class="mb-3">
           <label for="image" class="form-label">Imagen del Producto (Opcional)</label>
-          <input type="file" name="image" id="image" class="form-control" accept=".jpg, .png, .jpeg">
+          <input type="file" name="image" id="image" class="form-control" accept="image/*">
         </div>
 
         <!-- Categoría -->

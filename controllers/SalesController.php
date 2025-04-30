@@ -142,6 +142,17 @@ class SalesController extends Controller
     }
   }
 
+  public function adminSales()
+  {
+      if (!isset($_SESSION['role']) || $_SESSION['role'] != "Admin") {
+        header('Location: ' . PATH . '/users/login');
+        exit;
+      }
+
+      $sales = $this->salesModel->getAllSalesWithUser();
+      $this->view('sales/admin_sales.php', ['sales' => $sales]);
+  }
+
 }
 
 

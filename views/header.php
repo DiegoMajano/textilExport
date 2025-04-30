@@ -19,6 +19,11 @@
           <li class="nav-item">
             <a class="nav-link text-white" href="<?= PATH ?>">Inicio</a>
           </li>
+          <?php if(isset($_SESSION['role']) && $_SESSION['role'] !== "Customer"){ ?>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="<?= PATH ?>/dashboard">Dashboard</a>
+          </li>
+          <?php } ?>
           <li class="nav-item">
             <?php if (isset($_SESSION['user']) && isset($_SESSION['role'])): ?>
               <!-- Usuario logueado con rol definido -->

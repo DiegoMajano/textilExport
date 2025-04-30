@@ -3,6 +3,7 @@
 require_once 'core/Controller.php';
 require_once './model/ProductsModel.php';
 include_once './utils/validate_fields.php';
+require_once __DIR__ . '/../services/cloudinarySDK.php';
 
 class ProductsController extends Controller
 {
@@ -32,114 +33,149 @@ class ProductsController extends Controller
   }
 
   public function create()
-  {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $errors = validateProductFields($_POST['name'], $_POST['description'], $_POST['category'], $_POST['price'], $_POST['stock']);
-      if (count($errors) > 0) {
-        $_SESSION['error'] = $errors;
-        $this->view('products/create.php');
-        return;
-      }
+{
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $errors = validateProductFields($_POST['name'], $_POST['description'], $_POST['category'], $_POST['price'], $_POST['stock']);
+    
+    // Validar que se haya subido una imagen
+    if (!isset($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+      $errors[] = 'Debe subir una imagen válida.';
+    }
 
-      $categoryMap = [
-        'Cotton' => 1,
-        'Linen' => 2,
-        'Silk' => 3,
-        'Synthetic' => 5,
-        'Wool' => 4
-      ];
+    if (count($errors) > 0) {
+      $_SESSION['error'] = $errors;
+      $this->view('products/create.php');
+      return;
+    }
 
-      $category_id = $categoryMap[$_POST['category']] ?? null;
+    // Mapear categoría
+    $categoryMap = [
+      'Cotton' => 1,
+      'Linen' => 2,
+      'Silk' => 3,
+      'Synthetic' => 5,
+      'Wool' => 4
+    ];
+    $category_id = $categoryMap[$_POST['category']] ?? null;
 
-      if ($category_id === null) {
-        $_SESSION['error'] = 'Categoría inválida';
-        $this->view('products/create.php');
-        return;
-      }
+    if ($category_id === null) {
+      $_SESSION['error'] = ['Categoría inválida'];
+      $this->view('products/create.php');
+      return;
+    }
 
-      $productData['category_id'] = $category_id;
-      $productData = [
-        'product' => $_POST['name'],
-        'description' => $_POST['description'],
-        'category_id' => $category_id,
-        'price' => $_POST['price'],
-        'stock' => $_POST['stock'],
-        'state' => 1,
-        'image_url' => 'https://definicion.de/wp-content/uploads/2012/01/imagen-vectorial.png'
-      ];
+    $imageUrl = uploadImage($_FILES['image']);
 
+    if (str_starts_with($imageUrl, 'Error')) {
+      $_SESSION['error'] = [$imageUrl];
+      $this->view('products/create.php');
+      return;
+    }
 
+    // Crear producto
+    $productData = [
+      'product' => $_POST['name'],
+      'description' => $_POST['description'],
+      'category_id' => $category_id,
+      'price' => $_POST['price'],
+      'stock' => $_POST['stock'],
+      'state' => 1,
+      'image_url' => $imageUrl
+    ];
 
-      if ($this->model->create($productData)) {
-        $_SESSION['success'] = 'Producto creado correctamente';
-        header('Location: ' . PATH . '/products');
-        exit;
-      } else {
-        $_SESSION['error'] = 'Error al crear el producto';
-        $this->view('products/create.php');
-      }
+    if ($this->model->create($productData)) {
+      $_SESSION['success'] = 'Producto creado correctamente';
+      header('Location: ' . PATH . '/products');
+      exit;
     } else {
+      $_SESSION['error'] = ['Error al crear el producto'];
       $this->view('products/create.php');
     }
+  } else {
+    $this->view('products/create.php');
   }
+}
 
 
-  public function edit($id)
-  {
-    $product_id = implode(", ", $id);
 
+public function edit($id)
+{
+  // Ya no uses implode para un ID individual
+  $product_id = $id;
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $errors = validateProductFields($_POST['name'], $_POST['description'], $_POST['category'], $_POST['price'], $_POST['stock']);
-      if (count($errors) > 0) {
-        $_SESSION['error'] = $errors;
-        header(header: 'Location: ' . PATH . '/products');
-        return;
-      }
-      $categoryMap = [
-        'Cotton' => 1,
-        'Linen' => 2,
-        'Silk' => 3,
-        'Synthetic' => 5,
-        'Wool' => 4
-      ];
+  require_once __DIR__ . '/../services/cloudinarySDK.php';
 
-      $category_id = $categoryMap[$_POST['category']] ?? null;
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $errors = validateProductFields($_POST['name'], $_POST['description'], $_POST['category'], $_POST['price'], $_POST['stock']);
+    if (count($errors) > 0) {
+      $_SESSION['error'] = $errors;
+      header('Location: ' . PATH . '/products');
+      return;
+    }
 
-      if ($category_id === null) {
-        $_SESSION['error'] = 'Categoría inválida';
-        $this->view('products/create.php');
-        return;
-      }
-      $productData = [
-        'product_id' => $product_id,
-        'product' => $_POST['name'],
-        'description' => $_POST['description'],
-        'category_id' => $category_id,
-        'price' => $_POST['price'],
-        'stock' => $_POST['stock'],
-        'state' => 1,
-        'image_url' => 'https://definicion.de/wp-content/uploads/2012/01/imagen-vectorial.png'
-      ];
+    $categoryMap = [
+      'Cotton' => 1,
+      'Linen' => 2,
+      'Silk' => 3,
+      'Synthetic' => 5,
+      'Wool' => 4
+    ];
 
-      if ($this->model->update($productData)) {
-        $_SESSION['success'] = 'Producto actualizado correctamente';
-        header('Location: ' . PATH . '/products');
-        exit;
+    $category_id = $categoryMap[$_POST['category']] ?? null;
+
+    if ($category_id === null) {
+      $_SESSION['error'] = 'Categoría inválida';
+      $this->view('products/create.php');
+      return;
+    }
+
+    // Obtener la URL actual del producto
+    $product = $this->model->get($product_id); 
+    $oldImageUrl = $product['image_url'];
+
+    // Subir nueva imagen si fue proporcionada
+    $imageUrl = $oldImageUrl;
+    if (!empty($_FILES['image']['tmp_name'])) {
+      $uploadResult = uploadImage($_FILES['image'], $oldImageUrl);
+      if (str_starts_with($uploadResult, 'http')) {
+        $imageUrl = $uploadResult;
       } else {
-        $_SESSION['error'] = 'Error al actualizar el producto';
-        header(header: 'Location: ' . PATH . '/products');
+        $_SESSION['error'] = $uploadResult;
+        header('Location: ' . PATH . '/products');
+        return;
       }
+    }
+
+    $productData = [
+      'product_id' => $product_id,
+      'product' => $_POST['name'],
+      'description' => $_POST['description'],
+      'category_id' => $category_id,
+      'price' => $_POST['price'],
+      'stock' => $_POST['stock'],
+      'state' => 1,
+      'image_url' => $imageUrl
+    ];
+
+    if ($this->model->update($productData)) {
+      $_SESSION['success'] = 'Producto actualizado correctamente';
+      header('Location: ' . PATH . '/products');
+      exit;
     } else {
+      $_SESSION['error'] = 'Error al actualizar el producto';
       header('Location: ' . PATH . '/products');
     }
+  } else {
+    header('Location: ' . PATH . '/products');
   }
+}
+
 
 
   public function delete($id)
   {
-    $product_id = implode(", ", $id);
-    $this->model->delete($product_id);
+    //$product_id = implode(", ", $id);
+    $this->model->delete($id);
     header('Location: ' . PATH . '/products');
   }
 

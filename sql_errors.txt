@@ -156,3 +156,18 @@ Params: array (
   ':user_id' => '6',
   ':state' => false,
 )
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'state' cannot be null
+Query: UPDATE categories SET category = :category, description = :description, state = :state WHERE category_id = :category_id
+Params: array (
+  ':category' => 'Cotton',
+  ':description' => '100% cotton fabrics and products.',
+  ':state' => NULL,
+  ':category_id' => '1',
+)
+SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'category' cannot be null
+Query: INSERT INTO categories (category, description, state) VALUES (:category, :description, :state)
+Params: array (
+  ':category' => NULL,
+  ':description' => NULL,
+  ':state' => NULL,
+)

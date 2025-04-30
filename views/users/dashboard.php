@@ -1,12 +1,12 @@
 <?php include './views/header.php'; 
 
-if(!isset($_SESSION['role']) || $_SESSION['role'] !== 'Admin') {
+if(!isset($_SESSION['role']) || $_SESSION['role'] === 'Customer') {
     header('Location: ' . PATH . '/products');
     exit;
 }
 
-echo password_hash('choconance', PASSWORD_BCRYPT).'<br>';
-echo password_hash('chocokrispi', PASSWORD_BCRYPT).'<br>';
+// echo password_hash('choconance', PASSWORD_BCRYPT).'<br>';
+// echo password_hash('chocokrispi', PASSWORD_BCRYPT).'<br>';
 
 ?>
 
@@ -53,9 +53,23 @@ echo password_hash('chocokrispi', PASSWORD_BCRYPT).'<br>';
             </a>
         </div>
 
+        <?php if(isset($_SESSION['role']) && $_SESSION['role'] == 'Admin') {?>
         <div class="col-md-6 mb-4">
-            <a href="<?= PATH ?>/sales" class="btn btn-primary w-100">
+            <a href="<?= PATH ?>/sales/adminSales" class="btn btn-primary w-100">
                 Ver Ventas
+            </a>
+        </div>
+        <?php } ?>
+        <?php if(isset($_SESSION['role']) && $_SESSION['role'] == "Admin") {?>
+        <div class="col-md-6 mb-4">
+            <a href="<?= PATH ?>/categories" class="btn btn-primary w-100">
+                Ver Categorias
+            </a>
+        </div>
+        <?php } ?>
+        <div class="col-md-6 mb-4">
+            <a href="<?= PATH ?>/products" class="btn btn-primary w-100">
+                Ver Productos
             </a>
         </div>
     </div>

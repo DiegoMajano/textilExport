@@ -19,8 +19,8 @@
             <label class="form-label" for="description">Descripción del producto</label>
           </div>
           <div data-mdb-input-init class="form-outline mb-4">
-            <input value="<?= $product['image_url'] ?>" readonly name="oldImage" />
-            <input type="file" id="image" name="image" class="form-control" accept=".jpg, .png, .jpeg" />
+            <input hidden value="<?= $product['image_url'] ?>" readonly name="oldImage" />
+            <input type="file" id="image" name="image" class="form-control" accept="image/*" />
             <label class="form-label" for="image">Imagen del producto</label>
           </div>
           <div class="mb-3">

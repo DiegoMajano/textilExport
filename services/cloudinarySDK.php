@@ -1,9 +1,13 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+use Dotenv\Dotenv;
 use Cloudinary\Api\Upload\UploadApi;
 use Cloudinary\Api\Admin\AdminApi;
 use Cloudinary\Configuration\Configuration;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 $cloud_name = $_ENV['CLOUDINARY_CLOUD_NAME'];
 $api_key = $_ENV['CLOUDINARY_API_KEY']; 

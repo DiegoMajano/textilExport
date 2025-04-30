@@ -7,6 +7,7 @@ require_once 'controllers/ProductsController.php';
 require_once 'controllers/SalesController.php';
 require_once 'controllers/UsersController.php';
 require_once 'controllers/DashboardController.php';
+require_once 'controllers/CategoriesController.php';
 
 const PATH = '/textilExport';
 

@@ -8,7 +8,7 @@
 <?php endif; ?>
 
 <div class="container mt-4">
-  <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'Admin'): ?>
+  <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'Customer'): ?>
     <div class="d-flex justify-content-between mb-4">
       <a href="<?= PATH ?>/products/create" class="btn btn-primary">
         <i class="fas fa-plus me-2"></i>Agregar producto
@@ -55,7 +55,7 @@
                 <i class="fas fa-eye me-1"></i>Ver más
               </button>
 
-              <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'Admin'): ?>
+              <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'Admin'): ?>
                 <button type="button" class="btn btn-warning text-white w-auto fw-bold" data-bs-toggle="modal"
                   data-bs-target="#Editar<?= $product['product_id'] ?>">
                   Editar
