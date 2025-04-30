@@ -55,7 +55,7 @@
                 <i class="fas fa-eye me-1"></i>Ver más
               </button>
 
-              <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'Admin'): ?>
+              <?php if (isset($_SESSION['role']) && $_SESSION['role'] !== 'Customer'): ?>
                 <button type="button" class="btn btn-warning text-white w-auto fw-bold" data-bs-toggle="modal"
                   data-bs-target="#Editar<?= $product['product_id'] ?>">
                   Editar
@@ -73,7 +73,8 @@
                   <input type="hidden" name="user_id" value="<?= $_SESSION['user_id'] ?>" class="form-control w-25 me-2">
                   <input type="number" name="quantity" value="1" class="form-control w-25 me-2 " min="1" max="" required>
                   <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>" class="form-control w-25 me-2">
-                  <button type="submit" class="btn btn-outline-danger btn-sm"
+                  
+                  <button <?php if($product['stock'] == 0) echo 'disabled' ?> type="submit" class="btn btn-outline-danger btn-sm"
                     onclick="return confirm('¿Agregar este producto al carrito?')">
                     <i class="fas fa-cart-plus me-1"></i>Agregar al carrito</button>
 

@@ -27,52 +27,67 @@ class UsersController extends Controller
     $viewbag = array();
     $email = htmlspecialchars(trim($_POST['email']));
     $password = htmlspecialchars(trim($_POST['password']));
-    $result = $this->model->login($email, $password);
+    
+    $result = $this->model->login($email);  // Solo buscamos el usuario por email
+    
     if (empty($result)) {
       $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
       return $this->view('login.php', $viewbag);
     }
-    $_SESSION['email'] = $email;
-    $_SESSION['user_id'] = $result[0]['user_id'];
-    $_SESSION['user'] = $result[0]['username'];
-    $_SESSION['role_id'] = $result[0]['role_id'];
-    $_SESSION['role'] = $result[0]['role'];
-    header('Location: ' . PATH . '/products/index');
-  }
-
-  public function createUser()
-  {
-    $viewBag = array();
-
-    if (isset($_POST)) {
-      $errors = validateRegisterFields($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone']);
-      if (count($errors) > 0) {
-        $viewBag['error'] = $errors;
-        return $this->view('register.php', $viewBag);
-      }
-      $user = array(
-        'username' => $_POST['username'],
-        'email' => $_POST['email'],
-        'password' => $_POST['password'],
-        'phone' => $_POST['phone'],
-        'id_role' => $_POST['id_role'] ?? 2,
-        'state' => $_POST['state'] ?? 1
-      );
-
-      $success = $this->model->create($user);
-      if ($success) {
-        $viewBag['success'] = 'Usuario creado correctamente';
-        $_SESSION['email'] = $user['email'];
-        $_SESSION['user'] = $user['username'];
-        return $this->view('login.php', $viewBag);
-
-      } else {
-        $viewBag['error'] = 'Error al crear el usuario';
-        return $this->view('register.php', $viewBag);
-      }
-
+  
+    // Verificar la contraseña usando password_verify
+    if (password_verify($password, $result[0]['password'])) {
+      // La contraseña es correcta
+      $_SESSION['email'] = $email;
+      $_SESSION['user_id'] = $result[0]['user_id'];
+      $_SESSION['user'] = $result[0]['username'];
+      $_SESSION['role_id'] = $result[0]['role_id'];
+      $_SESSION['role'] = $result[0]['role'];
+      header('Location: ' . PATH . '/products/index');
+    } else {
+      $viewbag['error'] = 'Usuario y/o contraseña incorrecta';
+      return $this->view('login.php', $viewbag);
     }
   }
+  
+
+  public function createUser()
+{
+  $viewBag = array();
+
+  if (isset($_POST)) {
+    $errors = validateRegisterFields($_POST['username'], $_POST['email'], $_POST['password'], $_POST['phone']);
+    if (count($errors) > 0) {
+      $viewBag['error'] = $errors;
+      return $this->view('register.php', $viewBag);
+    }
+
+    // Encriptar la contraseña con password_hash
+    $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $user = array(
+      'username' => $_POST['username'],
+      'email' => $_POST['email'],
+      'password' => $passwordHash,  // Guardar la contraseña encriptada
+      'phone' => $_POST['phone'],
+      'id_role' => $_POST['id_role'] ?? 2,
+      'state' => $_POST['state'] ?? 1
+    );
+
+    $success = $this->model->create($user);
+    if ($success) {
+      $viewBag['success'] = 'Usuario creado correctamente';
+      $_SESSION['email'] = $user['email'];
+      $_SESSION['user'] = $user['username'];
+      return $this->view('login.php', $viewBag);
+
+    } else {
+      $viewBag['error'] = 'Error al crear el usuario';
+      return $this->view('register.php', $viewBag);
+    }
+
+  }
+}
 
 public function update($user_id)
 {
